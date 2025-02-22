@@ -104,7 +104,7 @@ If you use this project or the associated paper in your research, please cite it
 @article{
   title={Multimodal Post-Recovery Tracking Model for Heart Failure Prognosis},
   author={Jinyang Sun, Xi Chen, Xiumei Wang, Dandan Zhu and Xingping Zhou},
-  journal={Journal of Medical AI},
+  journal={xxx},
   year={2025},
   volume={xx},
   pages={xx-xx}
