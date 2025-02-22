@@ -18,20 +18,6 @@ cd Multimodal-Post-Recovery-Tracking-Model
 pip install -r requirements.txt
 ```
 
-## Usage
-
-### Training the Model
-To train the model, run the following command:
-
-```bash
-python v4.py
-```
-
-This will initiate the training process, which includes:
-- Data loading and preprocessing
-- Model training with BERT for textual data, a fully connected network for numerical data, and the DAE-Former model for cinematic data.
-- Model evaluation during the validation phase.
-
 ### Example Code for Model Training
 ```python
 import torch
