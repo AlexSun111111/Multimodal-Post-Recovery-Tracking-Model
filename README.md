@@ -1,4 +1,4 @@
-# Multimodal-Post-Recovery-Tracking-Model
+# Multimodal-Post-Recovery-Tracking-Model (M-PRTM)
 
 This repository contains the implementation of a **Multimodal Post-Recovery Tracking Model (M-PRTM)** aimed at predicting heart failure (HF) prognosis and detecting myocardial fibrosis using a combination of **textual**, **numerical**, and **cinematic (Cardiac MRI)** data. The model integrates multimodal data sources to offer a more accurate and holistic evaluation of patient outcomes compared to traditional single-modality models.
 
