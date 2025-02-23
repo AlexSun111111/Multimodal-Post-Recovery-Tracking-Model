@@ -3,15 +3,35 @@
 This repository contains the implementation of a **Multimodal Post-Recovery Tracking Model (M-PRTM)** aimed at predicting heart failure (HF) prognosis and detecting myocardial fibrosis using a combination of **textual**, **numerical**, and **cinematic (Cardiac MRI)** data. The model integrates multimodal data sources to offer a more accurate and holistic evaluation of patient outcomes compared to traditional single-modality models.
 
 ## Abstract
-Heart failure (HF) is one of the leading causes of mortality worldwide, and its complexity continues to challenge clinical management. This project develops a multimodal deep learning framework to predict heart failure prognosis using diverse data types, including clinical records, patient prescriptions, and cardiac MRI images. By integrating these modalities, our model provides a more comprehensive and precise prognosis, which aids in personalized treatment planning and early intervention.
+Heart failure is one of the leading causes of death worldwide, with millons of deaths each year, according to data from the World Health Organization (WHO) and other public health agencies. While significant progress has been made in the field of heart failure, leading to improved survival rates and improvement of ejection fraction, there remains substantial unmet needs, due to the complexity and multifactorial characteristics. Therefore, we propose a composable strategy framework for diagnosis and treatment optimization in heart failure. This framework simulates the doctor-patient consultation process and leverages multi-modal algorithms to analyze a range of data, including video, physical examination results, text results as well as medical history. By integrating these various data sources, our framework offers a more holistic evaluation and optimized treatment plan for patients. Our results demonstrate that this multi-modal approach outperforms single-modal artificial intelligence (AI) algorithms in terms of accuracy in heart failure (HF) classification and prognosis prediction.
 
 ## Introduction
 Heart failure (HF) is a complex disease that requires careful monitoring and treatment to improve patient outcomes. The current clinical practice often uses single-modality data such as clinical measurements or imaging, but these approaches may be insufficient for accurate prediction. This project introduces a **Multimodal Post-Recovery Tracking Model (M-PRTM)**, which combines textual (medical prescriptions), numerical (clinical metrics), and cinematic (Cardiac MRI) data to improve the prediction accuracy of heart failure prognosis.
 
-![Overview](https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model-/blob/main/logo/README.png)
+![Overview](https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model-/blob/main/logo/Overview.png)
+
+## Model Overview
+
+The **Multimodal Post-Recovery Tracking Model (M-PRTM)** integrates three data modalities:
+
+- **Cinematic Data**: Processed Cardiac MRI images used for myocardial fibrosis detection.
+- **Numerical Data**: Clinical indicators, such as age, gender, blood pressure, and other key metrics.
+- **Textual Data**: Medical records, including prescriptions and treatment history.
+
+These modalities are processed through different specialized models:
+
+- Cinematic data is processed using the DAE-Former model.
+- Numerical data is processed via a fully connected neural network.
+- Textual data is processed using a pre-trained BERT model.
+
+The features from these modalities are fused using an attention mechanism to dynamically prioritize the most critical information for predictions.
+
+![Framework](https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model-/blob/main/logo/Framework.png)
+
 
 ## Installation
 Clone the repository and install the required packages:
+
 ```bash
 git clone https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model.git
 cd Multimodal-Post-Recovery-Tracking-Model
@@ -46,16 +66,23 @@ output = nn.Linear(768 + 10, 1)(combined_features)  # Assuming binary output for
 ```
 
 ### Model Evaluation
-During training, the model's performance is evaluated on a validation set, and accuracy is measured for each task (binary classification and multiclass classification).
+During training, the model's performance is evaluated on a validation set, and accuracy is measured for each task (binary classification, multiclass classification, and days prediction).
 
 ## Code Structure
+
 Overview of the codebase:
-- `v4.py`: Main script for running simulations and training the model.
-- `config.json`: Contains the model configuration, including hyperparameters and architecture details.
-- `preprocessed_data_11.26.csv`: Preprocessed dataset with patient data.
-- `Train/`: Directory for saving model weights and predictions.
-  - `weights/`: Subdirectory for saving model weights.
-  - `predictions/`: Subdirectory for saving predictions.
+
+- `cinematic/`: Contains code related to cinematic data processing (e.g., Cardiac MRI images).
+- `logo/`: Contains the logo and related images for the project.
+- `numerical/`: Contains the code for processing numerical data (e.g., clinical metrics like age, blood pressure, etc.).
+- `text/`: Contains the code for processing textual data (e.g., medical prescriptions, patient history).
+- `.gitignore`: Specifies which files and directories to ignore in Git version control.
+- `LICENSE`: The license for the project (MIT License).
+- `README.md`: Project documentation providing an overview and setup instructions.
+- `attention_fushion.py`: The script responsible for multi-modal feature fusion using attention mechanisms.
+- `config.json`: Configuration file for the model, including hyperparameters and architecture details.
+- `data_example.csv`: Example dataset for testing and validation of the model.
+
 
 ## Dataset
 The dataset used in this project consists of preprocessed clinical, textual, and cinematic data for heart failure patients. The data includes:
@@ -63,7 +90,7 @@ The dataset used in this project consists of preprocessed clinical, textual, and
 - **Numerical data**: Clinical metrics such as blood pressure, heart rate, age, and weight.
 - **Cinematic data**: Cardiac MRI images for detecting myocardial fibrosis, processed using the DAE-Former model.
 
-You can access the dataset in the `preprocessed_data_11.26.csv` file.
+You can access the dataset in the `data_example.csv` file.
 
 ## Results
 The model achieved the following results during evaluation:
@@ -71,33 +98,27 @@ The model achieved the following results during evaluation:
 - **Heart Failure Prognosis Prediction**: 96.5% accuracy
 - **Event Prediction**: 97.6% accuracy
 - **Risk Prediction**: 93.8% accuracy
+  
+![Framework](https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model-/blob/main/logo/Results.png)
+
+- **(a)** Training curves of the DAE-former model showing the DSC and HD across 500 epochs.
+- **(b)** Example of Myocardial Fibrosis prediction results. The original CMR image, ground truth label, and predicted fibrosis region show strong alignment with an accuracy of approximately 87%.
+- **(c)** Training curves of the proposed M-PRTM model showing the test loss and accuracy across 500 epochs.
+- **(d)** Prediction examples of clinical outcomes, including death, cause of death, rehospitalization days, and MACCES events.
+- **(e)** Timeline of patient risk stratification and recovery prognosis. The model dynamically assesses risks and predicts critical events, such as heart failure recovery and ejection fraction decline.
+
 
 ## Contributions
-List of contributors:
+Part of contributors:
+- Xiumei Wang, College of Electronic and Optical Engineering, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
+- Xingping Zhou, Institute of Quantum Information and Technology, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
 - Jinyang Sun, Portland Institute, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
 - Xi Chen, College of Integrated Circuit Science and Engineering, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
-- Xiumei Wang, College of Electronic and Optical Engineering, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
-- Dandan Zhu, Institute of AI Education, East China Normal University, Shanghai 200333, China
-- Xingping Zhou, Institute of Quantum Information and Technology, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
-
-† ddzhu@mail.ecnu.edu.cn  
+ 
 ‡ zxp@njupt.edu.cn  
 
-## Citing
-If you use this project or the associated paper in your research, please cite it as follows:
-```bibtex
-@article{
-  title={Multimodal Post-Recovery Tracking Model for Heart Failure Prognosis},
-  author={Jinyang Sun, Xi Chen, Xiumei Wang, Dandan Zhu and Xingping Zhou},
-  journal={xxx},
-  year={2025},
-  volume={xx},
-  pages={xx-xx}
-}
-```
-
 ## License
-Specify the license under which the project is released.
+This project is licensed under the MIT License. See the LICENSE file for more information.
 
 ## Acknowledgments
 Thanks to the funding sources, contributors, and any research institutions involved.
