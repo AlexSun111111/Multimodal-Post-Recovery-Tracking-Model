@@ -13,9 +13,8 @@ Heart failure (HF) is a complex disease that requires careful monitoring and tre
 ## Installation
 Clone the repository and install the required packages:
 ```bash
-git clone https://github.com/your-username/Multimodal-Post-Recovery-Tracking-Model.git
+git clone https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model.git
 cd Multimodal-Post-Recovery-Tracking-Model
-pip install -r requirements.txt
 ```
 
 ### Example Code for Model Training
