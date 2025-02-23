@@ -106,13 +106,22 @@ The model achieved the following results during evaluation:
 
 
 ## Contributions
-Part of contributors:
-- Xiumei Wang, College of Electronic and Optical Engineering, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
-- Xingping Zhou, Institute of Quantum Information and Technology, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
-- Jinyang Sun, Portland Institute, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
-- Xi Chen, College of Integrated Circuit Science and Engineering, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
- 
-‡ zxp@njupt.edu.cn  
+
+List of contributors:
+
+- **Jianzhou Chen**, Department of Cardiology, Nanjing Drum Tower Hospital, State Key Laboratory of Pharmaceutical Biotechnology, Nanjing University, Zhongshan Road, 210008, Nanjing, China
+- **Xiumei Wang**, College of Electronic and Optical Engineering, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
+- **Jinyang Sun**, Portland Institute, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
+- **Xi Chen**, College of Integrated Circuit Science and Engineering, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
+- **Heyu Chu**, Department of Cardiology, Nanjing Drum Tower Hospital Clinical College of Nanjing Medical University, Nanjing, China
+- **Guo Song**, Department of Cardiology, Nanjing Drum Tower Hospital Clinical College of Nanjing Medical University, Nanjing, China
+- **Yuji Luo**, Department of Cardiology, Nanjing Drum Tower Hospital Clinical College of Nanjing Medical University, Nanjing, China
+- **Xingping Zhou**, Institute of Quantum Information and Technology, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
+- **Rong Gu**, Department of Cardiology, Nanjing Drum Tower Hospital, State Key Laboratory of Pharmaceutical Biotechnology, Nanjing University, Zhongshan Road, 210008, Nanjing, China
+
+Correspondence: ‡ zxp@njupt.edu.cn  
+Correspondence: * gurong.nju@163.com
+
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more information.
