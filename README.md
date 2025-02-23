@@ -8,7 +8,7 @@ Heart failure (HF) is one of the leading causes of mortality worldwide, and its 
 ## Introduction
 Heart failure (HF) is a complex disease that requires careful monitoring and treatment to improve patient outcomes. The current clinical practice often uses single-modality data such as clinical measurements or imaging, but these approaches may be insufficient for accurate prediction. This project introduces a **Multimodal Post-Recovery Tracking Model (M-PRTM)**, which combines textual (medical prescriptions), numerical (clinical metrics), and cinematic (Cardiac MRI) data to improve the prediction accuracy of heart failure prognosis.
 
-![M-PRTM Overview](https://github.com/your-username/Multimodal-Post-Recovery-Tracking-Model/blob/main/Logo/README.png)
+![Overview]([https://github.com/your-username/Multimodal-Post-Recovery-Tracking-Model/blob/main/Logo/README.png](https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model-/blob/main/logo/README.png))
 
 ## Installation
 Clone the repository and install the required packages:
