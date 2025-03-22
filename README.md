@@ -2,6 +2,8 @@
 
 This repository contains the implementation of a **Multimodal Post-Recovery Tracking Model (M-PRTM)** aimed at predicting heart failure (HF) prognosis and detecting myocardial fibrosis using a combination of **textual**, **numerical**, and **cinematic (Cardiac MRI)** data. The model integrates multimodal data sources to offer a more accurate and holistic evaluation of patient outcomes compared to traditional single-modality models.
 
+You can access the project here: https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model
+
 ## Introduction
 Heart failure (HF) is a complex disease that requires careful monitoring and treatment to improve patient outcomes. The current clinical practice often uses single-modality data such as clinical measurements or imaging, but these approaches may be insufficient for accurate prediction. This project introduces a **Multimodal Post-Recovery Tracking Model (M-PRTM)**, which combines textual (medical prescriptions), numerical (clinical metrics), and cinematic (Cardiac MRI) data to improve the prediction accuracy of heart failure prognosis.
 
