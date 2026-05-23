@@ -1,133 +1,226 @@
 # Multimodal-Post-Recovery-Tracking-Model (M-PRTM)
 
-This repository contains the implementation of a **Multimodal Post-Recovery Tracking Model (M-PRTM)** aimed at predicting heart failure (HF) prognosis and detecting myocardial fibrosis using a combination of **textual**, **numerical**, and **cinematic (Cardiac MRI)** data. The model integrates multimodal data sources to offer a more accurate and holistic evaluation of patient outcomes compared to traditional single-modality models.
+This repository contains the implementation of the **Multimodal Post-Recovery Tracking Model (M-PRTM)** for heart failure (HF) prognosis prediction and myocardial fibrosis detection. The framework integrates **textual medical records**, **structured numerical clinical indicators**, and **cine cardiac magnetic resonance (cine CMR)** data to support multimodal prediction of heart failure outcomes.
 
-You can access the project here: https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model
+This repository accompanies the article:
+
+**A composable multimodal framework for cine CMR-text–driven prediction of heart failure outcomes**
+
+Repository link:  
+https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model
+
+---
 
 ## Introduction
-Heart failure (HF) is a complex disease that requires careful monitoring and treatment to improve patient outcomes. The current clinical practice often uses single-modality data such as clinical measurements or imaging, but these approaches may be insufficient for accurate prediction. This project introduces a **Multimodal Post-Recovery Tracking Model (M-PRTM)**, which combines textual (medical prescriptions), numerical (clinical metrics), and cinematic (Cardiac MRI) data to improve the prediction accuracy of heart failure prognosis.
 
-![Overview](https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model-/blob/main/logo/Overview.png)
+Heart failure (HF) is a complex and multifactorial disease that requires careful monitoring, prognosis assessment, and treatment optimization. Conventional clinical prediction approaches often rely on single-modality information, such as clinical measurements, imaging features, or textual records alone. However, single-modality models may provide only partial information and may be insufficient for accurate prognosis prediction.
+
+This project introduces the **Multimodal Post-Recovery Tracking Model (M-PRTM)**, which combines:
+
+- textual medical records, including prescriptions and treatment history;
+- structured numerical clinical indicators, such as demographic information, vital signs, laboratory indices, and other clinical metrics;
+- cine CMR data for myocardial fibrosis-related feature extraction.
+
+By integrating these heterogeneous data sources, M-PRTM aims to provide a more comprehensive assessment of patient status and improve the prediction of heart failure outcomes.
+
+![Overview](https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model/blob/main/logo/Overview.png)
+
+---
 
 ## Model Overview
 
 The **Multimodal Post-Recovery Tracking Model (M-PRTM)** integrates three data modalities:
 
-- **Cinematic Data**: Processed Cardiac MRI images used for myocardial fibrosis detection.
-- **Numerical Data**: Clinical indicators, such as age, gender, blood pressure, and other key metrics.
-- **Textual Data**: Medical records, including prescriptions and treatment history.
+- **Cine CMR Data**: cine cardiac magnetic resonance images used for myocardial fibrosis detection and imaging feature extraction.
+- **Numerical Data**: structured clinical indicators, such as age, gender, blood pressure, heart rate, body mass index, laboratory measurements, and other clinical variables.
+- **Textual Data**: unstructured or semi-structured medical records, including prescriptions, medication history, and treatment-related textual information.
 
-These modalities are processed through different specialized models:
+These modalities are processed through dedicated feature extraction modules:
 
-- Cinematic data is processed using the DAE-Former model.
-- Numerical data is processed via a fully connected neural network.
-- Textual data is processed using a pre-trained BERT model.
+- cine CMR data are processed using the DAE-Former model;
+- numerical data are processed using a fully connected neural network;
+- textual data are encoded using a pre-trained BERT-based model.
 
-The features from these modalities are fused using an attention mechanism to dynamically prioritize the most critical information for predictions.
+The extracted features are then fused through an attention-based multimodal fusion module, which dynamically prioritizes the most informative modalities and features for prognosis prediction.
 
-![Framework](https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model-/blob/main/logo/Framework.png)
+![Framework](https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model/blob/main/logo/Framework.png)
 
+---
 
 ## Installation
-Clone the repository and install the required packages:
+
+Clone the repository:
 
 ```bash
 git clone https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model.git
 cd Multimodal-Post-Recovery-Tracking-Model
 ```
 
-### Example Code for Model Training
-```python
-import torch
-from transformers import BertTokenizer, BertModel, BertConfig
-from torch import nn
+Install the required Python packages according to your local environment. The core dependencies include:
 
-# Define model and tokenizer
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-model = BertModel.from_pretrained('bert-base-uncased')
-
-# Example data: Textual and Numerical inputs
-texts = ['This is an example text for heart failure patient data']
-numerical_data = torch.randn(1, 10)  # Random numerical features (e.g., age, weight, etc.)
-
-# Tokenize textual data
-inputs = tokenizer(texts, return_tensors="pt", padding=True, truncation=True, max_length=512)
-
-# Pass through the model
-outputs = model(**inputs)
-text_features = outputs.last_hidden_state
-
-# Combine with numerical features
-combined_features = torch.cat((text_features[:, 0, :], numerical_data), dim=1)
-
-# Forward pass through the final layers
-output = nn.Linear(768 + 10, 1)(combined_features)  # Assuming binary output for simplicity
+```bash
+pip install torch transformers numpy pandas scikit-learn
 ```
 
-### Model Evaluation
-During training, the model's performance is evaluated on a validation set, and accuracy is measured for each task (binary classification, multiclass classification, and days prediction).
+Additional packages may be required depending on the specific imaging, training, or evaluation scripts used in each module.
+
+---
+
+## Example Code for Model Training
+
+```python
+import torch
+from transformers import BertTokenizer, BertModel
+from torch import nn
+
+# Define tokenizer and BERT model
+tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+bert_model = BertModel.from_pretrained("bert-base-uncased")
+
+# Example textual and numerical inputs
+texts = ["This is an example text for heart failure patient data."]
+numerical_data = torch.randn(1, 10)  # Example numerical features
+
+# Tokenize textual data
+inputs = tokenizer(
+    texts,
+    return_tensors="pt",
+    padding=True,
+    truncation=True,
+    max_length=512
+)
+
+# Extract textual features
+outputs = bert_model(**inputs)
+text_features = outputs.last_hidden_state[:, 0, :]
+
+# Combine textual and numerical features
+combined_features = torch.cat((text_features, numerical_data), dim=1)
+
+# Example output layer for binary prediction
+classifier = nn.Linear(768 + 10, 1)
+output = classifier(combined_features)
+```
+
+---
+
+## Model Evaluation
+
+During training and validation, the model can be evaluated on multiple tasks, including:
+
+- myocardial fibrosis segmentation;
+- heart failure prognosis prediction;
+- event prediction;
+- risk prediction;
+- auxiliary time-to-event estimation.
+
+The evaluation metrics may include accuracy, sensitivity, specificity, AUPRC, Dice similarity coefficient, Hausdorff distance, MAE, RMSE, and R², depending on the task.
+
+---
 
 ## Code Structure
 
-Overview of the codebase:
+The repository is organized as follows:
 
-- `cinematic/`: Contains code related to cinematic data processing (e.g., Cardiac MRI images).
-- `logo/`: Contains the logo and related images for the project.
-- `numerical/`: Contains the code for processing numerical data (e.g., clinical metrics like age, blood pressure, etc.).
-- `text/`: Contains the code for processing textual data (e.g., medical prescriptions, patient history).
-- `.gitignore`: Specifies which files and directories to ignore in Git version control.
-- `LICENSE`: The license for the project (MIT License).
-- `README.md`: Project documentation providing an overview and setup instructions.
-- `attention_fushion.py`: The script responsible for multi-modal feature fusion using attention mechanisms.
-- `config.json`: Configuration file for the model, including hyperparameters and architecture details.
-- `data_example.csv`: Example dataset for testing and validation of the model.
+- `cinematic/`: code related to cine CMR processing and imaging feature extraction.
+- `numerical/`: code for processing structured numerical clinical indicators.
+- `text/`: code for processing textual medical records and prescriptions.
+- `logo/`: figures and images used in the repository documentation.
+- `attention_fushion.py`: script for multimodal feature fusion using attention mechanisms.
+- `config.json`: configuration file for model hyperparameters and architecture settings.
+- `data_example.csv`: example data file for demonstrating the model workflow.
+- `.gitignore`: Git ignore file.
+- `LICENSE`: MIT License file.
+- `README.md`: project documentation.
 
+---
 
-## Dataset
-The dataset used in this project consists of preprocessed clinical, textual, and cinematic data for heart failure patients. The data includes:
-- **Textual data**: Medical prescriptions and patient notes, processed using BERT.
-- **Numerical data**: Clinical metrics such as blood pressure, heart rate, age, and weight.
-- **Cinematic data**: Cardiac MRI images for detecting myocardial fibrosis, processed using the DAE-Former model.
+## Data Availability
 
-You can access the dataset in the `data_example.csv` file.
+This repository provides the source code and an example data file (`data_example.csv`) for demonstrating the model workflow.
+
+The full clinical dataset used in the study is not publicly available due to patient privacy and ethical restrictions. Access to the clinical data may be considered by the corresponding authors upon reasonable request and subject to institutional approval.
+
+---
 
 ## Results
-The model achieved the following results during evaluation:
+
+The model achieved the following representative results during evaluation:
+
 - **Fibrosis Segmentation**: 87.2% accuracy
 - **Heart Failure Prognosis Prediction**: 96.5% accuracy
 - **Event Prediction**: 97.6% accuracy
 - **Risk Prediction**: 93.8% accuracy
-  
-![Framework](https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model-/blob/main/logo/Results.png)
 
-- **(a)** Training curves of the DAE-former model showing the DSC and HD across 500 epochs.
-- **(b)** Example of Myocardial Fibrosis prediction results. The original CMR image, ground truth label, and predicted fibrosis region show strong alignment with an accuracy of approximately 87%.
-- **(c)** Training curves of the proposed M-PRTM model showing the test loss and accuracy across 500 epochs.
-- **(d)** Prediction examples of clinical outcomes, including death, cause of death, rehospitalization days, and MACCES events.
-- **(e)** Timeline of patient risk stratification and recovery prognosis. The model dynamically assesses risks and predicts critical events, such as heart failure recovery and ejection fraction decline.
+![Results](https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model/blob/main/logo/Results.png)
 
+The result figure includes:
+
+- **(a)** Training curves of the DAE-Former model showing segmentation-related metrics across training epochs.
+- **(b)** Example myocardial fibrosis prediction results, including the original CMR image, reference fibrosis label, and predicted fibrosis region.
+- **(c)** Training curves of the proposed M-PRTM model showing prediction performance across training epochs.
+- **(d)** Representative prediction examples of clinical outcomes, including death, cause of death, rehospitalization days, and MACCE-related events.
+- **(e)** Timeline of patient risk stratification and prognosis prediction, illustrating how the model dynamically assesses patient risk and supports individualized follow-up planning.
+
+---
+
+## Citation
+
+If you use this repository, code, or example data in your research, please cite it as:
+
+Sun J and Chen X 2026 *Multimodal Post-Recovery Tracking Model* GitHub repository. Available at: https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model
+
+### BibTeX
+
+```bibtex
+@misc{sun2026mprtm,
+  author       = {Jinyang Sun and Xi Chen},
+  title        = {Multimodal Post-Recovery Tracking Model},
+  year         = {2026},
+  howpublished = {GitHub repository},
+  url          = {https://github.com/AlexSun111111/Multimodal-Post-Recovery-Tracking-Model}
+}
+```
+
+---
 
 ## Contributions
 
-List of contributors:
+This repository accompanies the article:
 
-- **Jianzhou Chen**, Department of Cardiology, Nanjing Drum Tower Hospital, State Key Laboratory of Pharmaceutical Biotechnology, Nanjing University, Zhongshan Road, 210008, Nanjing, China
-- **Xiumei Wang**, College of Electronic and Optical Engineering, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
-- **Jinyang Sun**, Portland Institute, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
+**A composable multimodal framework for cine CMR-text–driven prediction of heart failure outcomes**
+
+### Code Authors and Maintainers
+
+- **Jinyang Sun**, School of Electronic Information and Electrical Engineering, Shanghai Jiao Tong University, Shanghai 200240, China
 - **Xi Chen**, College of Integrated Circuit Science and Engineering, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
-- **Heyu Chu**, Department of Cardiology, Nanjing Drum Tower Hospital Clinical College of Nanjing Medical University, Nanjing, China
-- **Guo Song**, Department of Cardiology, Nanjing Drum Tower Hospital Clinical College of Nanjing Medical University, Nanjing, China
-- **Yuji Luo**, Department of Cardiology, Nanjing Drum Tower Hospital Clinical College of Nanjing Medical University, Nanjing, China
-- **Xingping Zhou‡**, Institute of Quantum Information and Technology, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
-- **Rong Gu***, Department of Cardiology, Nanjing Drum Tower Hospital, State Key Laboratory of Pharmaceutical Biotechnology, Nanjing University, Zhongshan Road, 210008, Nanjing, China
 
-Correspondence: ‡zxp@njupt.edu.cn
+The code was mainly developed by Jinyang Sun and Xi Chen, and organized and maintained by Jinyang Sun.
 
-Correspondence: *gurong.nju@163.com
+### Article Authors
 
+- **Jianzhou Chen**, Department of Cardiology, Nanjing Drum Tower Hospital, State Key Laboratory of Pharmaceutical Biotechnology, Nanjing University, Nanjing 210008, China
+- **Jinyang Sun**, School of Electronic Information and Electrical Engineering, Shanghai Jiao Tong University, Shanghai 200240, China
+- **Xiumei Wang**, College of Electronic and Optical Engineering, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
+- **Xi Chen**, College of Integrated Circuit Science and Engineering, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
+- **Heyu Chu**, Department of Cardiology, Nanjing Drum Tower Hospital Clinical College of Nanjing Medical University, Nanjing 210008, China
+- **Guo Song**, Department of Cardiology, Nanjing Drum Tower Hospital Clinical College of Nanjing Medical University, Nanjing 210008, China
+- **Yuji Luo**, Department of Cardiology, Nanjing Drum Tower Hospital Clinical College of Nanjing Medical University, Nanjing 210008, China
+- **Xingping Zhou**, Institute of Quantum Information and Technology, Nanjing University of Posts and Telecommunications, Nanjing 210003, China
+- **Rong Gu**, Department of Cardiology, Nanjing Drum Tower Hospital, State Key Laboratory of Pharmaceutical Biotechnology, Nanjing University, Nanjing 210008, China
+
+Correspondence: zxp@njupt.edu.cn and gurong.nju@163.com
+
+---
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for more information.
+
+This project is licensed under the MIT License. See the `LICENSE` file for more information.
+
+---
 
 ## Acknowledgments
-Thanks to the funding sources, contributors, and any research institutions involved.
+
+This work was supported by the National Natural Science Foundation of China under Grant 12404365.
+
+The authors thank Professor Xiaofei Li for insightful discussions.
